@@ -1,0 +1,42 @@
+{
+  "name": "abasare_app",
+  "version": "1.0.0",
+  "description": "abasare backend project",
+  "main": "app.js",
+  "scripts": {
+    "start": "babel-node app.js",
+    "dev": "nodemon --exec npm run compile",
+    "compile": "babel-node app.js",
+    "lint": "eslint --ext .js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Myechelonltd/abasare_app.git"
+  },
+  "author": "Myechelon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Myechelonltd/abasare_app/issues"
+  },
+  "homepage": "https://github.com/Myechelonltd/abasare_app#readme",
+  "dependencies": {
+    "@babel/cli": "^7.16.8",
+    "@babel/core": "^7.16.7",
+    "@babel/node": "^7.16.8",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/plugin-proposal-object-rest-spread": "^7.16.7",
+    "@babel/preset-env": "^7.16.11",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "joi": "^17.6.1",
+    "mongoose": "^6.6.2",
+    "swagger-jsdoc": "^6.2.5",
+    "swagger-ui-express": "^4.5.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.24.0",
+    "eslint-config-prettier": "^8.5.0",
+    "prettier": "^2.7.1"
+  }
+}
