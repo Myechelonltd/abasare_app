@@ -1,13 +1,11 @@
 import express from 'express'
 import {
-    createUser,
-    getUsers,
-    getUser,
-    deletedUser,
-    updatedUser,
-    changeUserPass,
-    userLogin
-} from '../controllers/User'
+    createTown,
+    getTowns,
+    getTown,
+    deletedTown,
+    updatedTown
+} from '../controllers/Town'
 
 import {
     verifyToken,
@@ -18,6 +16,7 @@ import {
 
 const router = express.Router();
 
+
 /**
  * @swagger
  * components:
@@ -25,23 +24,18 @@ const router = express.Router();
  *     Users:
  *       type: object
  *       required:
- *         - email
- *         - password   
- *         - confirmPassword
+ *         - name
+ *         - state 
  *       properties:
- *         email:
+ *         name:
  *           type: string
- *           description: email of the user 
- *         password:
+ *           description: name of the city 
+ *         state:
  *           type: string
- *           description: password of the user 
- *         confirmPassword:
- *           type: string
- *           description: confirmPassword of the user
+ *           description: state of the city
  *       example:
- *         email: cyifuzo.dev@gmail.com
- *         password: Admin123  
- *         confirmPassword: Admin123
+ *         name: Karuruma
+ *         state: KAR
  *   error: 
  *      type: object
  *      properties:
@@ -56,36 +50,33 @@ const router = express.Router();
 /**
  * @swagger
  * tags:
- *  name: Users(Clients)
- *  description: Users
+ *  name: City
+ *  description: cities
  * 
  * */ 
 
 /**
  * @swagger 
- * /api/v1/user:
+ * /api/v1/town:
  *  post:
- *    summary: Creating user
+ *    summary: Creating town
  *    tags:
- *    - "Users(Clients)"
+ *    - "City"
  *    requestBody:
  *      content:
  *        application/json:
  *            schema:
  *              required: true
  *              properties:
- *                 email:
+ *                 name:
  *                    type: string
- *                    description: This string of email
- *                 password:
+ *                    description: This string of name
+ *                 state:
  *                    type: string
- *                    description: This string of password
- *                 confirmPassword:
- *                    type: string
- *                    description: This string of 10 confirmPassword
+ *                    description: This string of state
  *    responses:
  *        200: 
- *          description: User have been created
+ *          description: city have been created
  *          content:
  *            application/json:
  *                schema:
@@ -113,13 +104,13 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/v1/user:
+ * /api/v1/town:
  *   get:
- *     summary: Getting all users
- *     tags: [Users(Clients)]
+ *     summary: Getting all towns
+ *     tags: [City]
  *     responses:
  *       200:
- *         description: All available Users
+ *         description: All available city
  *         content:
  *           application/json:
  *             schema:
@@ -131,15 +122,15 @@ const router = express.Router();
 /**
  * 
  * @swagger  
- * /api/v1/user/{id}:
+ * /api/v1/town/{id}:
  *  get:
- *    summary: get a user
+ *    summary: get a town
  *    tags:
- *    - "Users(Clients)"
+ *    - "City"
  *    parameters:
  *      - name: id
  *        in: path
- *        description: user id
+ *        description: city id
  *        required: true
  *        schema:
  *          type: string
@@ -165,7 +156,7 @@ const router = express.Router();
  *                schema: 
  *                  $ref: "#/components/schemas/error"
  *        404:
- *          description: User doesn't exist
+ *          description: city doesn't exist
  *          content:
  *              application/json:
  *                schema: 
@@ -182,21 +173,21 @@ const router = express.Router();
 /**
  * @swagger 
  * 
- * /api/v1/user/{id}:
+ * /api/v1/town/{id}:
  *  delete:
- *    summary: Deleting a user
+ *    summary: Deleting a town
  *    tags:
- *    - "Users(Clients)"
+ *    - "City"
  *    parameters:
  *      - name: id
  *        in: path
- *        description: user id
+ *        description: town id
  *        required: true
  *        schema:
  *          type: string
  *    responses:
  *        200: 
- *          description: deleted user
+ *          description: deleted town
  *          content:
  *            application/json:
  *                schema:
@@ -223,9 +214,7 @@ const router = express.Router();
  *                  $ref: "#/components/schemas/error"      
  * */ 
 
-router.post("/login", userLogin);
-router.put("/change/password/:id", changeUserPass);
-router.route("/").post(createUser).get( getUsers)
-router.route("/:id").get(getUser).delete(deletedUser).put(updatedUser)
+router.route("/").post(createTown).get(getTowns)
+router.route("/:id").get(getTown).delete(deletedTown).put(updatedTown)
 
 export default router

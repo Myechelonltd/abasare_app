@@ -8,6 +8,16 @@ import swaggerUI from 'swagger-ui-express';
 import swaggerJsDoc from "swagger-jsdoc";
 
 import usersRoutes from './routes/User'
+import registerDriverRoutes from './routes/RegisterDriver'
+import driversProfileRoutes from './routes/DriverProfile'
+import clientsProfileRoutes from './routes/ClientProfile'
+import bookingRoutes from './routes/Booking'
+import newRidesRoutes from './routes/NewRides'
+import nationalityRoutes from './routes/Nation'
+import carRoutes from './routes/Cars'
+import townRoutes from './routes/Town'
+import bookingHistoryRoutes from './routes/BookingHistory'
+import userProfileRoutes from './routes/UserProfile'
 
 const app = express();
 app.use(cors());
@@ -24,7 +34,17 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/v1/doc', swaggerUI.serve, swaggerUI.setup(specs));
-app.use('/api/v1/users', usersRoutes);
+app.use('/api/v1/user', usersRoutes);
+app.use('/api/v1/driver', registerDriverRoutes);
+app.use('/api/v1/drivers/profile', driversProfileRoutes);
+app.use('/api/v1/client', clientsProfileRoutes);
+app.use('/api/v1/booking', bookingRoutes);
+app.use('/api/v1/rides', newRidesRoutes);
+app.use('/api/v1/nations', nationalityRoutes);
+app.use('/api/v1/car', carRoutes);
+app.use('/api/v1/town', townRoutes);
+app.use('/api/v1/history/booking', bookingHistoryRoutes);
+app.use('/api/v1/profile/user', userProfileRoutes);
 
 connect().then(() => {
   console.log('Database connected')

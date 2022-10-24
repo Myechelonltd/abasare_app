@@ -1,22 +1,19 @@
 import express from 'express'
 import {
-    createUser,
-    getUsers,
-    getUser,
-    deletedUser,
-    updatedUser,
-    changeUserPass,
-    userLogin
-} from '../controllers/User'
-
+    createBooking,
+    getBookings,
+    cancelBooking,
+    getBooking
+} from '../controllers/Booking'
 import {
     verifyToken,
     verifyTokenAndAdmin,
     verifyTokenAndDriver,
     verifyTokenAndClient
-} from '../middleware/Auth' 
+} from '../middleware/Auth'
 
 const router = express.Router();
+
 
 /**
  * @swagger
@@ -25,23 +22,58 @@ const router = express.Router();
  *     Users:
  *       type: object
  *       required:
- *         - email
- *         - password   
- *         - confirmPassword
+ *         - is_reported
+ *         - is_rated
+ *         - order_id
+ *         - pickup_date
+ *         - return_date
+ *         - billing_type
+ *         - ride_status
+ *         - total_amount
+ *         - payment_status
+ *         - driverProfileId
  *       properties:
- *         email:
+ *         is_reported:
  *           type: string
- *           description: email of the user 
- *         password:
+ *           description: is_reported of the user 
+ *         is_rated:
  *           type: string
- *           description: password of the user 
- *         confirmPassword:
+ *           description: is_rated of the user 
+ *         order_id:
  *           type: string
- *           description: confirmPassword of the user
+ *           description: order_id of the user
+ *         pickup_date:
+ *           type: string
+ *           description: pickup_date of the user
+ *         return_date:
+ *           type: string
+ *           description: return_date of the user
+ *         billing_type:
+ *           type: string
+ *           description: billing_type of the user
+ *         ride_status:
+ *           type: string
+ *           description: ride_status of the user
+ *         total_amount:
+ *           type: string
+ *           description: total_amount of the user
+ *         payment_status:
+ *           type: string
+ *           description: payment_status of the user
+ *         driverProfileId:
+ *           type: string
+ *           description: driverProfileId of the user
  *       example:
- *         email: cyifuzo.dev@gmail.com
- *         password: Admin123  
- *         confirmPassword: Admin123
+ *         is_reported: is_reported
+ *         is_rated: is_rated  
+ *         order_id: order_id
+ *         pickup_date: 31/12/2021
+ *         return_date: 1/1/2020 
+ *         billing_type: cash
+ *         ride_status: ride_status
+ *         total_amount: frw 10000
+ *         payment_status: pending
+ *         driverProfileId: ggf098766gths
  *   error: 
  *      type: object
  *      properties:
@@ -56,36 +88,64 @@ const router = express.Router();
 /**
  * @swagger
  * tags:
- *  name: Users(Clients)
- *  description: Users
+ *  name: Booking
+ *  description: Booking
  * 
- * */ 
+ * */
 
 /**
  * @swagger 
- * /api/v1/user:
+ * /api/v1/booking/book/{driverId}:
  *  post:
- *    summary: Creating user
+ *    summary: Creating Booking
  *    tags:
- *    - "Users(Clients)"
+ *    - "Booking"
  *    requestBody:
  *      content:
  *        application/json:
  *            schema:
  *              required: true
  *              properties:
- *                 email:
+ *                 is_reported:
  *                    type: string
- *                    description: This string of email
- *                 password:
+ *                    description: This string of is_reported
+ *                 is_rated:
  *                    type: string
- *                    description: This string of password
- *                 confirmPassword:
+ *                    description: string of the is_rated 
+ *                 order_id:
  *                    type: string
- *                    description: This string of 10 confirmPassword
+ *                    description: string of the order_id
+ *                 pickup_date:
+ *                    type: string
+ *                    description: string of the pickup_date
+ *                 return_date:
+ *                    type: string
+ *                    description: string of the return_date
+ *                 billing_type:
+ *                    type: string
+ *                    description: string of the billing_type
+ *                 ride_status:
+ *                    type: string
+ *                    description: string of the ride_status
+ *                 total_amount:
+ *                    type: string
+ *                    description: string of the total_amount
+ *                 payment_status:
+ *                    type: string
+ *                    description: string of the payment_status
+ *                 driverProfileId:
+ *                    type: string
+ *                    description: string of the image driverProfileId
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        description: Driver id
+ *        required: true
+ *        schema:
+ *          type: string
  *    responses:
  *        200: 
- *          description: User have been created
+ *          description: Booking have been added
  *          content:
  *            application/json:
  *                schema:
@@ -113,10 +173,10 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/v1/user:
+ * /api/v1/booking:
  *   get:
- *     summary: Getting all users
- *     tags: [Users(Clients)]
+ *     summary: Getting all Bookings
+ *     tags: [Booking]
  *     responses:
  *       200:
  *         description: All available Users
@@ -126,26 +186,26 @@ const router = express.Router();
  *               $ref: '#/components/schemas/Users'
  *       500:
  *         description: Internal server error 
-*/  
+*/
 
 /**
  * 
  * @swagger  
- * /api/v1/user/{id}:
+ * /api/v1/booking/{id}:
  *  get:
- *    summary: get a user
+ *    summary: get a Booking
  *    tags:
- *    - "Users(Clients)"
+ *    - "Booking"
  *    parameters:
  *      - name: id
  *        in: path
- *        description: user id
+ *        description: Booking id
  *        required: true
  *        schema:
  *          type: string
  *    responses:
  *        200: 
- *          description: User information
+ *          description: Booking information
  *          content:
  *            application/json:
  *                schema:
@@ -165,7 +225,7 @@ const router = express.Router();
  *                schema: 
  *                  $ref: "#/components/schemas/error"
  *        404:
- *          description: User doesn't exist
+ *          description: Driver doesn't exist
  *          content:
  *              application/json:
  *                schema: 
@@ -176,27 +236,27 @@ const router = express.Router();
  *              application/json:
  *                schema: 
  *                  $ref: "#/components/schemas/error"      
- * */ 
+ * */
 
 
 /**
  * @swagger 
  * 
- * /api/v1/user/{id}:
+ * /api/v1/booking/cancel/{id}:
  *  delete:
- *    summary: Deleting a user
+ *    summary: cancel a Booking
  *    tags:
- *    - "Users(Clients)"
+ *    - "Booking"
  *    parameters:
  *      - name: id
  *        in: path
- *        description: user id
+ *        description: Booking id
  *        required: true
  *        schema:
  *          type: string
  *    responses:
  *        200: 
- *          description: deleted user
+ *          description: canceled Booking
  *          content:
  *            application/json:
  *                schema:
@@ -221,11 +281,11 @@ const router = express.Router();
  *              application/json:
  *                schema: 
  *                  $ref: "#/components/schemas/error"      
- * */ 
+ * */
 
-router.post("/login", userLogin);
-router.put("/change/password/:id", changeUserPass);
-router.route("/").post(createUser).get( getUsers)
-router.route("/:id").get(getUser).delete(deletedUser).put(updatedUser)
+router.post("/book/:driverId", createBooking);
+router.get("/", getBookings);
+router.get("/:id", getBooking);
+router.delete("/cancel/:id", cancelBooking);
 
 export default router
