@@ -9,8 +9,10 @@ import { hashPassword } from '../utils/email'
 const createUser = async (req, res) => {
     try {
         const {
+            customer_id,
             name,
             email,
+            userId,
             password,
             confirmPassword,
             userType,
@@ -18,7 +20,7 @@ const createUser = async (req, res) => {
             phone,
             nationality,
             address,
-            doc_typ,
+            doc_type,
             domestic_license,
             driving_permit_fontSide,
             driving_permit_backSide,
@@ -26,7 +28,6 @@ const createUser = async (req, res) => {
             passport,
             aadhar_card,
             status,
-            bookingId,
         } = req.body
         const newUser = new User({
             name: name,
@@ -36,27 +37,34 @@ const createUser = async (req, res) => {
             confirmPassword:confirmPassword,
             userType: userType
         });
-        const userProfile = new UserProfile({
-            phone_code: phone_code,
-            nationality: nationality,
-            address: address,
-            doc_typ: doc_typ,
-            domestic_license: domestic_license,
-            driving_permit: {
-                driving_permit_fontSide: driving_permit_fontSide,
-                driving_permit_backSide: driving_permit_backSide
-            },
-            international_license: international_license,
-            passport: passport,
-            aadhar_card: aadhar_card,
-            status: status,
-            bookingId: bookingId
-        })
+        
         const findUser = await User.findOne({ email: email });
         if (findUser) return sendError(res, 409, "This email already exist! change email address 👍🏼", null);
 
-        const userSaved = await newUser.save();
-        const profileSaved = await userProfile.save();
+        const userSaved = await newUser.save(function (err, room) {
+            const userId = room._id;
+            const userProfile = new UserProfile({
+                customer_id,
+                name: name,
+                email: email,
+                userId: userId,
+                phone_code: phone_code,
+                phone,
+                nationality: "Rwandan",
+                address: "kanombe, kk 11 st",
+                doc_type: "0",
+                domestic_license: null,
+                driving_permit: {
+                    driving_permit_fontSide: "https://res.cloudinary.com/djisilfwk/image/upload/v1639061050/thriftycab/Docs/dl-1_e0wuxj.png",
+                    driving_permit_backSide: "https://res.cloudinary.com/djisilfwk/image/upload/v1639061050/thriftycab/Docs/dl-2_xmrezp.png"
+                },
+                international_license: "https://res.cloudinary.com/djisilfwk/image/upload/v1639061047/thriftycab/Docs/27956_dobwk6.jpg",
+                passport: "https://res.cloudinary.com/djisilfwk/image/upload/v1639061046/thriftycab/Docs/6041675_tb66mp.jpg",
+                aadhar_card: "aadhar_card",
+                status: "1"
+            })
+            userProfile.save()
+        })
         return success(res, 201, "User added successfully", userSaved)
     } catch (error) {
         return sendError(res, 500, error.message, null)

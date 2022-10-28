@@ -1,10 +1,14 @@
 import { success, fail, sendError, } from '../function/respond'
 import Driver from '../models/DriverProfile'
+import Register from '../models/RegisterDriver'
 
 
 const getDrivers = async (req, res) => {
     try {
         const drivers = await Driver.find().sort("-createdAt");
+        // drivers.forEach((item)=>{
+        //     console.log(item.fullName)
+        // })
         return success(res, 200, "retrieved all Drivers", drivers)
     } catch (error) {
         return sendError(res, 500, error.message, null)
@@ -13,7 +17,9 @@ const getDrivers = async (req, res) => {
 
 const getDriver = async (req, res) => {
     try {
-        const driver = await Driver.findById(req.params.id)
+        const driverId = await Register.findById(req.params.id)
+        const userId = driverId._id
+        const driver = await Driver.findOne({driverId:userId})
         if (!driver) return fail(res, 400, "Driver doesn't exist", null)
         return success(res, 200, "retrieved Driver", driver)
 
@@ -34,8 +40,10 @@ const deletedDriver = async (req, res) => {
 
 const updatedDriver = async (req, res) => {
     try {
-        var id = req.params.id;
-        const updatedDriver = await Driver.findByIdAndUpdate({ _id: id }, req.body, {
+        
+        const driverId = await Register.findById(req.params.id)
+        const foundId = driverId._id
+        const updatedDriver = await Driver.findOneAndUpdate({ driverId: foundId }, req.body, {
             new: true,
         })
         if (updatedDriver) {

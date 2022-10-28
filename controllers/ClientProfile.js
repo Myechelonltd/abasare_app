@@ -1,5 +1,6 @@
 import { success, fail, sendError, } from '../function/respond'
 import Client from '../models/ClientProfile'
+import User from '../models/User'
 
 
 const getClients = async (req, res) => {
@@ -13,7 +14,9 @@ const getClients = async (req, res) => {
 
 const getClient = async (req, res) => {
     try {
-        const client = await Client.findById(req.params.id)
+        const user = await User.findById(req.params.id)
+        const clientId = user._id
+        const client = await Client.findOne({userId:clientId})
         if (!client) return fail(res, 400, "User doesn't exist", null)
         return success(res, 200, "retrieved User", client)
 

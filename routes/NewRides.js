@@ -2,7 +2,7 @@ import express from 'express'
 import {
     createRides,
     getRides,
-    getRide,
+    getDriverBookings,
     deletedRides,
     updatedRide
 } from '../controllers/NewRides'
@@ -129,7 +129,58 @@ const router = express.Router();
  *                  $ref: "#/components/schemas/error"      
  * */
 
+/**
+ * /api/v1/rides/{id}:
+ *  put:
+ *    summary: Updating
+ *    tags:
+ *    - "AllRides"
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        description: AllRides id
+ *        required: true
+ *        schema:
+ *          type: string
+ *    requestBody:
+ *      content:
+ *        application/json:
+ *          schema:
+ *            required: true
+ *              properties:
+ *                bookingStatus:
+ *                  type: string
+ *                    description: Booking status 
+ *    responses:
+ *        200: 
+ *          description: delete AllRides
+ *          content:
+ *            application/json:
+ *                schema:
+ *                  type: object
+ *                  properties:
+ *                    status:
+ *                      type: string
+ *                    data:
+ *                      type: integer
+ *                    message:
+ *                      type: string 
+ *                        
+ *        400:
+ *          description: Invalid inputs
+ *          content:
+ *              application/json:
+ *                schema: 
+ *                  $ref: "#/components/schemas/error"
+ *        500:
+ *          description: Server error
+ *          content:
+ *              application/json:
+ *                schema: 
+ *                  $ref: "#/components/schemas/error"   
+ * */
+
 
 router.route("/").post(createRides).get(getRides)
-router.route("/:id").get(getRide).delete(deletedRides).put(updatedRide)
+router.route("/:id").get(getDriverBookings).delete(deletedRides).put(updatedRide)
 export default router

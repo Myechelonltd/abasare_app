@@ -25,10 +25,14 @@ const router = express.Router();
  *     Users:
  *       type: object
  *       required:
+ *         - name
  *         - email
  *         - password   
  *         - confirmPassword
  *       properties:
+ *         name:
+ *           type: string
+ *           description: name of the user 
  *         email:
  *           type: string
  *           description: email of the user 
@@ -39,6 +43,7 @@ const router = express.Router();
  *           type: string
  *           description: confirmPassword of the user
  *       example:
+ *         name: cyifuzo
  *         email: cyifuzo.dev@gmail.com
  *         password: Admin123  
  *         confirmPassword: Admin123
@@ -74,6 +79,9 @@ const router = express.Router();
  *            schema:
  *              required: true
  *              properties:
+ *                 name:
+ *                    type: string
+ *                    description: This string of name
  *                 email:
  *                    type: string
  *                    description: This string of email
@@ -222,6 +230,57 @@ const router = express.Router();
  *                schema: 
  *                  $ref: "#/components/schemas/error"      
  * */ 
+
+/**
+ * @swagger 
+ * /api/v1/user/login:
+ *  post:
+ *    summary: logging in user
+ *    tags:
+ *    - "Users(Clients)"
+ *    requestBody:
+ *      content:
+ *        application/json:
+ *            schema:
+ *              required: true
+ *              properties:
+ *                 email:
+ *                    type: string
+ *                    description: client@gmail.com
+ *                 password:
+ *                    type: string
+ *                    description: test123  
+ *    responses:
+ *        200: 
+ *          description: User logged in response
+ *          content:
+ *            application/json:
+ *                schema:
+ *                  type: object
+ *                  properties:
+ *                    message:
+ *                      type: string
+ *                    token:
+ *                      type: string                        
+ *        400:
+ *          description: Invalid inputs
+ *          content:
+ *              application/json:
+ *                schema: 
+ *                  $ref: "#/components/schemas/error"
+ *        401:
+ *          description: Wrong credentials
+ *          content:
+ *              application/json:
+ *                schema: 
+ *                  $ref: "#/components/schemas/error"
+ *        500:
+ *          description: Server error
+ *          content:
+ *              application/json:
+ *                schema: 
+ *                  $ref: "#/components/schemas/error"   
+ * */  
 
 router.post("/login", userLogin);
 router.put("/change/password/:id", changeUserPass);

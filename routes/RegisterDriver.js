@@ -32,7 +32,7 @@ const router = express.Router();
  *         - phoneNumber
  *         - alternatePhoneNumber
  *         - gender
- *         - profilePicture
+ *         - avatar
  *         - licenseNumber
  *         - fontSide
  *         - backSide
@@ -64,9 +64,9 @@ const router = express.Router();
  *         gender:
  *           type: string
  *           description: gender of the user
- *         profilePicture:
+ *         avatar:
  *           type: string
- *           description: profilePicture of the user
+ *           description: avatar of the user
  *         licenseNumber:
  *           type: string
  *           description: licenseNumber of the user
@@ -102,7 +102,7 @@ const router = express.Router();
  *         phoneNumber: 098765  
  *         alternatePhoneNumber: 345678
  *         gender: male
- *         profilePicture: imageLink
+ *         avatar: imageLink
  *         licenseNumber: 987rthjkl
  *         fontSide: imageLink
  *         backSide: imageLink
@@ -165,7 +165,7 @@ const router = express.Router();
  *                 gender:
  *                    type: string
  *                    description: string of the gender
- *                 profilePicture:
+ *                 avatar:
  *                    type: string
  *                    description: string of the profilePicture
  *                 licenseNumber:
@@ -290,7 +290,6 @@ const router = express.Router();
  *                  $ref: "#/components/schemas/error"      
  * */
 
-
 /**
  * @swagger 
  * 
@@ -334,6 +333,58 @@ const router = express.Router();
  *                schema: 
  *                  $ref: "#/components/schemas/error"      
  * */
+
+
+/**
+ * @swagger 
+ * /api/v1/driver/login:
+ *  post:
+ *    summary: Driver logging in 
+ *    tags:
+ *    - "Driver"
+ *    requestBody:
+ *      content:
+ *        application/json:
+ *            schema:
+ *              required: true
+ *              properties:
+ *                 email:
+ *                    type: string
+ *                    description: client@gmail.com
+ *                 password:
+ *                    type: string
+ *                    description: test123  
+ *    responses:
+ *        200: 
+ *          description: User logged in response
+ *          content:
+ *            application/json:
+ *                schema:
+ *                  type: object
+ *                  properties:
+ *                    message:
+ *                      type: string
+ *                    token:
+ *                      type: string                        
+ *        400:
+ *          description: Invalid inputs
+ *          content:
+ *              application/json:
+ *                schema: 
+ *                  $ref: "#/components/schemas/error"
+ *        401:
+ *          description: Wrong credentials
+ *          content:
+ *              application/json:
+ *                schema: 
+ *                  $ref: "#/components/schemas/error"
+ *        500:
+ *          description: Server error
+ *          content:
+ *              application/json:
+ *                schema: 
+ *                  $ref: "#/components/schemas/error"   
+ * */  
 
 router.post("/login", driverLogin);
 router.put("/change/password/:id", changeDriverPass);

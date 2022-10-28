@@ -2,7 +2,7 @@ import express from 'express'
 import {
     createBooking,
     getBookings,
-    getBooking,
+    getDriverBookings,
     cancelBooking
 } from '../controllers/BookingHistory'
 
@@ -138,6 +138,6 @@ const router = express.Router();
  * */
 
 router.route("/").post(createBooking).get(getBookings)
-router.route("/:id").get(getBooking).delete(cancelBooking)
+router.route("/:id").get(getDriverBookings).delete(cancelBooking)
 
 export default router

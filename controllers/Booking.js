@@ -2,6 +2,8 @@ import { success, fail, sendError, } from '../function/respond'
 import Booking from '../models/Booking'
 import DriverProfile from '../models/DriverProfile'
 
+
+
 const createBooking = async (req, res) => {
 
     try {
@@ -49,10 +51,38 @@ const createBooking = async (req, res) => {
 
 const getBookings = async (req, res) => {
     try {
-        const bookings = await Booking.find()
-        // .populate("clientProfileId")
-        // .populate("driverProfileId");
-        return success(res, 200, "Data fetched.", bookings)
+
+        var AvailableDrivers = [];
+        const drivers = await DriverProfile.find({"acceptingBooking":true})
+             drivers.forEach((item)=>{
+                AvailableDrivers.push(
+                    {
+                        "_id": item.id,
+                        "vehicle_id": item.driverId,
+                        "model_id": 34,
+                        "type_id": 1,
+                        "photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiCoHLktPNbzYjYcrFoYnlmxX5SfRKCIJQsA&usqp=CAU",
+                        "vehicle_name": item.fullName,
+                        "limited_price": item.cost,
+                        "unlimited_price": item.phoneNumber,
+                        "seater": item.rides,
+                        "fuel_type": "Diesel",
+                        "transmission": "Manual",
+                        "year": item.yearExperience,
+                        "air_bags": "Yes",
+                        "is_limited": "Yes",
+                        "is_unlimited": "Yes"
+                    }
+                );
+
+     })
+     return res.status(200).json({
+        status: "1",
+        message:"Data fetched.",
+        data: AvailableDrivers
+     })
+        // const bookings = await Booking.find()
+        // return success(res, 200, "Data fetched.", bookings)
     } catch (error) {
         return sendError(res, 500, error.message, null)
     }

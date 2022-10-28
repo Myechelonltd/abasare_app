@@ -18,6 +18,7 @@ import carRoutes from './routes/Cars'
 import townRoutes from './routes/Town'
 import bookingHistoryRoutes from './routes/BookingHistory'
 import userProfileRoutes from './routes/UserProfile'
+import realBookingRoutes from './routes/RealBooking'
 
 const app = express();
 app.use(cors());
@@ -45,6 +46,7 @@ app.use('/api/v1/car', carRoutes);
 app.use('/api/v1/town', townRoutes);
 app.use('/api/v1/history/booking', bookingHistoryRoutes);
 app.use('/api/v1/profile/user', userProfileRoutes);
+app.use('/api/v1/real_booking', realBookingRoutes);
 
 connect().then(() => {
   console.log('Database connected')

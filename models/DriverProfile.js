@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const DriverSchema = new mongoose.Schema({
+    driverId: String,
     fullName: {
         type: String,
         required: [true, "your fullNames are required"]
@@ -19,7 +20,7 @@ const DriverSchema = new mongoose.Schema({
     },
     alternatePhoneNumber: Number,
     gender: String,
-    profilePicture: String,
+    avatar: String,
     licenseNumber: {
         type: String,
         required: [true, "LicenseNumber is required"]
@@ -49,10 +50,11 @@ const DriverSchema = new mongoose.Schema({
         default: true
     },
     commission: String,
+    employeeId: String,
+    lastLocationUpdatedAt: String,
     yearExperience: String,
     rides: String,
-    cost: String,
-    bookingId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Booking' }]
+    cost: String
 },
     { timestamps: true });
 
